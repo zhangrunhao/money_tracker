@@ -31,8 +31,12 @@ class RecordModel {
         (element) => element.name == json['sign'],
       ),
       money: json['money'],
-      createTime: json['createTime'],
-      updateTime: json['updateTime'],
+      createTime: DateTime.fromMicrosecondsSinceEpoch(
+        json['createTime'] * 1000,
+      ),
+      updateTime: DateTime.fromMicrosecondsSinceEpoch(
+        json['updateTime'] * 1000,
+      ),
     );
   }
 }

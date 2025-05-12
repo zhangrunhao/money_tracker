@@ -4,8 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:money_tracker/models/record.dart';
 
-class AccountDetailPage extends StatelessWidget {
+class AccountDetailPage extends StatefulWidget {
   const AccountDetailPage({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _AccountDetailPageState();
+  }
+}
+
+class _AccountDetailPageState extends State {
+  List<RecordModel> records = [];
 
   Future<List<RecordModel>> loadMockRecords() async {
     final String jsonString = await rootBundle.loadString(
@@ -13,6 +22,16 @@ class AccountDetailPage extends StatelessWidget {
     );
     final List<dynamic> jsonData = json.decode(jsonString);
     return jsonData.map((e) => RecordModel.fromJson(e)).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadMockRecords().then((loaded) {
+      setState(() {
+        records = loaded;
+      });
+    });
   }
 
   @override
@@ -24,13 +43,9 @@ class AccountDetailPage extends StatelessWidget {
           const _AccountOverviewBanner(money: 200),
           Expanded(
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: records.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  leading: const Icon(Icons.attach_money),
-                  title: Text('记录项 $index'),
-                  subtitle: const Text('详情描述'),
-                );
+                return _RecordModelItem(record: records[index]);
               },
             ),
           ),
@@ -88,6 +103,32 @@ class _RecordModelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row();
+    return Container(
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Row(
+        children: [
+          SizedBox(width: 20, height: 20, child: Image.network(record.icon)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(record.name),
+                const SizedBox(height: 4),
+                Text(record.desc),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            '${record.sign == RecordSign.add ? '+' : '-'}${record.money}',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }

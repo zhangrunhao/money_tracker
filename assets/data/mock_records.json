@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "name": "meal",
     "desc": "ZhangLaLa",
     "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcoTwHrfGAUBiFJv5FedKRwdXpd8mkStN-Q&s",
@@ -10,11 +10,11 @@
     "updateTime": 1747009359
   },
   {
-    "id": 2,
-    "name": "meal",
-    "desc": "ZhangLaLa",
+    "id": "2",
+    "name": "salary",
+    "desc": "salary",
     "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcoTwHrfGAUBiFJv5FedKRwdXpd8mkStN-Q&s",
-    "sign": "subtract",
+    "sign": "add",
     "money": 325,
     "createTime": 1747009359,
     "updateTime": 1747009359
