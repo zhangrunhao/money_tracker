@@ -1,14 +1,16 @@
-class Record {
+enum RecordSign { add, subtract }
+
+class RecordModel {
   final String id;
   final String name;
   final String desc;
   final String icon;
-  final String sign; // add, subtract
+  final RecordSign sign; // add, subtract
   final int money;
   final DateTime createTime;
   final DateTime updateTime;
 
-  Record({
+  RecordModel({
     required this.id,
     required this.name,
     required this.desc,
@@ -19,7 +21,18 @@ class Record {
     required this.updateTime,
   });
 
-  String getMoneyString() {
-    return (money / 100).toStringAsFixed(2);
+  factory RecordModel.fromJson(Map<String, dynamic> json) {
+    return RecordModel(
+      id: json['id'],
+      name: json['name'],
+      desc: json['desc'],
+      icon: json['icon'],
+      sign: RecordSign.values.firstWhere(
+        (element) => element.name == json['sign'],
+      ),
+      money: json['money'],
+      createTime: json['createTime'],
+      updateTime: json['updateTime'],
+    );
   }
 }

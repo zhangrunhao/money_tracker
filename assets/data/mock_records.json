@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "meal",
+    "desc": "ZhangLaLa",
+    "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcoTwHrfGAUBiFJv5FedKRwdXpd8mkStN-Q&s",
+    "sign": "subtract",
+    "money": 325,
+    "createTime": 1747009359,
+    "updateTime": 1747009359
+  },
+  {
+    "id": 2,
+    "name": "meal",
+    "desc": "ZhangLaLa",
+    "icon": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfcoTwHrfGAUBiFJv5FedKRwdXpd8mkStN-Q&s",
+    "sign": "subtract",
+    "money": 325,
+    "createTime": 1747009359,
+    "updateTime": 1747009359
+  }
+]

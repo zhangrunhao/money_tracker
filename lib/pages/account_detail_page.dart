@@ -1,7 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:money_tracker/models/record.dart';
 
 class AccountDetailPage extends StatelessWidget {
   const AccountDetailPage({super.key});
+
+  Future<List<RecordModel>> loadMockRecords() async {
+    final String jsonString = await rootBundle.loadString(
+      "assets/data/mock_records.json",
+    );
+    final List<dynamic> jsonData = json.decode(jsonString);
+    return jsonData.map((e) => RecordModel.fromJson(e)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,28 +60,31 @@ class _AccountOverviewBanner extends StatelessWidget {
   }
 }
 
-class _MonthRecordArray extends StatelessWidget {
-  final List<Record> records;
+class _MonthItem extends StatelessWidget {
+  final List<RecordModel> records;
   final String month;
 
-  const _MonthRecordArray({required this.records, required this.month});
+  const _MonthItem({required this.records, required this.month});
+
   @override
   Widget build(BuildContext context) {
-    return Expanded(child: ListView.builder(
-      itemCount: records.length,
-      itemBuilder: (context) => {
-        final 
-
-      },
-
-    ));
+    return Column(
+      children: [
+        Text(month),
+        ListView.builder(
+          itemBuilder: (BuildContext context, int index) {
+            return _RecordModelItem(record: records[index]);
+          },
+        ),
+      ],
+    );
   }
 }
 
-class _RecordItem extends StatelessWidget {
-  final Record record;
+class _RecordModelItem extends StatelessWidget {
+  final RecordModel record;
 
-  const _RecordItem({required this.record});
+  const _RecordModelItem({required this.record});
 
   @override
   Widget build(BuildContext context) {
