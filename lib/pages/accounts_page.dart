@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/models/account.dart';
 
 class AccountsPage extends StatelessWidget {
   const AccountsPage({super.key});
@@ -27,6 +28,23 @@ class AccountsPage extends StatelessWidget {
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class _AccountItem extends StatelessWidget {
+  final AccountModel _account;
+
+  const _AccountItem({super.key, required this._account});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+      ),
+      padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+      child: Row(children: [Icon(Icons.book)]),
     );
   }
 }

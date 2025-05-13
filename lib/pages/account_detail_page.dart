@@ -75,26 +75,26 @@ class _AccountOverviewBanner extends StatelessWidget {
   }
 }
 
-class _MonthItem extends StatelessWidget {
-  final List<RecordModel> records;
-  final String month;
+// class _MonthItem extends StatelessWidget {
+//   final List<RecordModel> records;
+//   final String month;
 
-  const _MonthItem({required this.records, required this.month});
+//   const _MonthItem({required this.records, required this.month});
 
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(month),
-        ListView.builder(
-          itemBuilder: (BuildContext context, int index) {
-            return _RecordModelItem(record: records[index]);
-          },
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Column(
+//       children: [
+//         Text(month),
+//         ListView.builder(
+//           itemBuilder: (BuildContext context, int index) {
+//             return _RecordModelItem(record: records[index]);
+//           },
+//         ),
+//       ],
+//     );
+//   }
+// }
 
 class _RecordModelItem extends StatelessWidget {
   final RecordModel record;
