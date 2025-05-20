@@ -13,10 +13,14 @@ class AccountModel {
     required this.type,
   });
 
+  String balanceString() {
+    return (balance / 100).toStringAsFixed(2);
+  }
+
   factory AccountModel.fromJson(Map<String, dynamic> json) {
     return AccountModel(
       id: json["id"],
-      name: json[' name'],
+      name: json['name'],
       balance: json['balance'],
       type: AccountType.values.firstWhere(
         (element) => element.name == json['type'],

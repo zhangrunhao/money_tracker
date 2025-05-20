@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_tracker/pages/account_detail_page.dart';
-import 'package:money_tracker/pages/accounts_page.dart';
+import 'package:money_tracker/pages/account_list_page.dart';
 import 'package:money_tracker/pages/record_page.dart';
 
 void main() {
@@ -17,9 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: '/accounts',
       routes: {
-        '/accounts': (context) => AccountsPage(),
+        '/': (context) => AccountListPage(),
         '/accountDetail': (context) => AccountDetailPage(),
         '/record': (context) => RecordPage(),
       },

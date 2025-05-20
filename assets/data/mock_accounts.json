@@ -2,13 +2,13 @@
   {
     "id": "1",
     "name": "招行",
-    "balance": 3000,
+    "balance": 3001,
     "type": "stored"
   },
   {
     "id": "2",
     "name": "支付宝",
-    "balance": 50000,
+    "balance": 50210,
     "type": "stored"
   },
   {

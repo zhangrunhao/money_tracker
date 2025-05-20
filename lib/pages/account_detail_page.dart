@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:money_tracker/models/record.dart';
+import 'package:money_tracker/models/record_model.dart';
 
 class AccountDetailPage extends StatefulWidget {
   const AccountDetailPage({super.key});
