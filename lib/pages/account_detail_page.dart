@@ -38,6 +38,13 @@ class _AccountDetailPageState extends State {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('account detail')),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // 可跳转到添加账户的页面或弹出对话框
+          Navigator.pushNamed(context, '/record');
+        },
+        child: const Icon(Icons.add),
+      ),
       body: Column(
         children: [
           const _AccountOverviewBanner(money: 200),
