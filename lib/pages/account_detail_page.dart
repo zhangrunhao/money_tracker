@@ -2,37 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:money_tracker/models/month_record_model.dart';
 import 'package:money_tracker/models/record_model.dart';
+import 'package:money_tracker/provider/records_provider.dart';
+import 'package:provider/provider.dart';
 
-class AccountDetailPage extends StatefulWidget {
+class AccountDetailPage extends StatelessWidget {
   const AccountDetailPage({super.key});
-
-  @override
-  State<StatefulWidget> createState() {
-    return _AccountDetailPageState();
-  }
-}
-
-class _AccountDetailPageState extends State {
-  List<RecordModel> records = [];
-
-  Future<List<RecordModel>> loadMockRecords() async {
-    final String jsonString = await rootBundle.loadString(
-      "assets/data/mock_records.json",
-    );
-    final List<dynamic> jsonData = json.decode(jsonString);
-    return jsonData.map((e) => RecordModel.fromJson(e)).toList();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    loadMockRecords().then((loaded) {
-      setState(() {
-        records = loaded;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +16,6 @@ class _AccountDetailPageState extends State {
       appBar: AppBar(title: const Text('account detail')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // 可跳转到添加账户的页面或弹出对话框
           Navigator.pushNamed(context, '/record');
         },
         child: const Icon(Icons.add),
@@ -48,14 +23,7 @@ class _AccountDetailPageState extends State {
       body: Column(
         children: [
           const _AccountOverviewBanner(money: 200),
-          Expanded(
-            child: ListView.builder(
-              itemCount: records.length,
-              itemBuilder: (context, index) {
-                return _RecordModelItem(record: records[index]);
-              },
-            ),
-          ),
+          Expanded(child: _RecordList()),
         ],
       ),
     );
@@ -82,60 +50,62 @@ class _AccountOverviewBanner extends StatelessWidget {
   }
 }
 
-// class _MonthItem extends StatelessWidget {
-//   final List<RecordModel> records;
-//   final String month;
+class _RecordList extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _RecordListState();
+}
 
-//   const _MonthItem({required this.records, required this.month});
+class _RecordListState extends State {
+  late final ScrollController _controller;
+  late final RecordsProvider vm;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       children: [
-//         Text(month),
-//         ListView.builder(
-//           itemBuilder: (BuildContext context, int index) {
-//             return _RecordModelItem(record: records[index]);
-//           },
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-class _RecordModelItem extends StatelessWidget {
-  final RecordModel record;
-
-  const _RecordModelItem({required this.record});
+  @override
+  void initState() {
+    super.initState();
+    vm = RecordsProvider();
+    _controller =
+        ScrollController()..addListener(() {
+          if (_controller.position.pixels >
+              _controller.position.maxScrollExtent - 200) {
+            vm.loadNextPage();
+          }
+        });
+    vm.loadNextPage();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.grey, width: 0.5)),
+    return ChangeNotifierProvider.value(
+      value: vm,
+      child: Consumer<RecordsProvider>(
+        builder: (_, prov, __) {
+          return ListView.builder(
+            controller: _controller,
+            itemCount: prov.sections.length + (prov.hasMore ? 1 : 0),
+            itemBuilder: (ctx, idx) {
+              if (idx > prov.sections.length) {
+                return CircularProgressIndicator();
+              }
+              final section = prov.sections[idx];
+              return _MonthRecord(section: section);
+            },
+          );
+        },
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      child: Row(
-        children: [
-          SizedBox(width: 20, height: 20, child: Image.network(record.icon)),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(record.name),
-                const SizedBox(height: 4),
-                Text(record.desc),
-              ],
-            ),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            '${record.sign == RecordSign.add ? '+' : '-'}${record.money}',
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
+    );
+  }
+}
+
+class _MonthRecord extends StatelessWidget {
+  final MonthRecordModel section;
+
+  const _MonthRecord({required this.section});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [Container()],
     );
   }
 }
