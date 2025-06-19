@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:money_tracker/db/initial_data.dart';
 import 'package:money_tracker/pages/account_detail_page.dart';
 import 'package:money_tracker/pages/account_list_page.dart';
 import 'package:money_tracker/pages/record_page.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 

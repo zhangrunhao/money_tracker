@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/models/month_record_model.dart';
+import 'package:money_tracker/db/models/month_record_model.dart';
+import 'package:money_tracker/db/models/record_model.dart';
 import 'package:money_tracker/provider/records_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -59,13 +60,13 @@ class _RecordListState extends State {
   void initState() {
     super.initState();
     vm = RecordsProvider();
-    _controller =
-        ScrollController()..addListener(() {
-          if (_controller.position.pixels >
-              _controller.position.maxScrollExtent - 200) {
-            vm.loadNextPage();
-          }
-        });
+    _controller = ScrollController();
+    _controller.addListener(() {
+      if (_controller.position.pixels >
+          _controller.position.maxScrollExtent - 200) {
+        vm.loadNextPage();
+      }
+    });
     vm.loadNextPage();
   }
 
@@ -74,15 +75,23 @@ class _RecordListState extends State {
     return ChangeNotifierProvider.value(
       value: vm,
       child: Consumer<RecordsProvider>(
-        builder: (_, prov, __) {
+        builder: (
+          BuildContext context,
+          RecordsProvider provider,
+          Widget? child,
+        ) {
+          // provider === vm 完全是一个对象
           return ListView.builder(
             controller: _controller,
-            itemCount: prov.sections.length + (prov.hasMore ? 1 : 0),
+            itemCount: provider.sections.length + (provider.hasMore ? 1 : 0),
             itemBuilder: (ctx, idx) {
-              if (idx > prov.sections.length) {
-                return CircularProgressIndicator();
+              if (idx == provider.sections.length && provider.hasMore) {
+                return const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                );
               }
-              final section = prov.sections[idx];
+              final section = provider.sections[idx];
               return _MonthRecord(section: section);
             },
           );
@@ -101,7 +110,14 @@ class _MonthRecord extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [Container()],
+      children: [
+        Text(section.month),
+        ...section.records.map(
+          (RecordModel record) =>
+              ListTile(title: Text(record.name), subtitle: Text(record.desc)),
+        ),
+        const Divider(),
+      ],
     );
   }
 }

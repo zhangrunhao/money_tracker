@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_tracker/db/record.dart';
-import 'package:money_tracker/models/month_record_model.dart';
-import 'package:money_tracker/models/record_model.dart';
+import 'package:money_tracker/db/dao/record_dao.dart';
+import 'package:money_tracker/db/models/month_record_model.dart';
+import 'package:money_tracker/db/models/record_model.dart';
 
 class RecordsProvider with ChangeNotifier {
   List<MonthRecordModel> sections = [];
@@ -12,7 +12,7 @@ class RecordsProvider with ChangeNotifier {
 
   Future<void> loadNextPage() async {
     if (!hasMore) return;
-    final newRecords = await queryRecordsPage(page: _page);
+    final newRecords = await RecordDao().queryRecordsPage(page: _page);
     if (newRecords.isEmpty) {
       hasMore = false;
       return;

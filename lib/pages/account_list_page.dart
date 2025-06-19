@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:money_tracker/models/account_model.dart';
+import 'package:money_tracker/db/dao/account_dao.dart';
+import 'package:money_tracker/db/models/account_model.dart';
 
 class AccountListPage extends StatefulWidget {
   const AccountListPage({super.key});
@@ -17,20 +18,10 @@ class _AccountListPageState extends State {
   List<AccountModel> storedAccounts = [];
   List<AccountModel> debtAccounts = [];
 
-  Future<List<AccountModel>> loadMockData() async {
-    final String jsonString = await rootBundle.loadString(
-      'assets/data/mock_accounts.json',
-    );
-    final List<dynamic> list = json.decode(jsonString);
-    return list.map((e) {
-      return AccountModel.fromJson(e);
-    }).toList();
-  }
-
   @override
   void initState() {
     super.initState();
-    loadMockData().then((v) {
+    AccountDao().getAllAccounts().then((v) {
       setState(() {
         storedAccounts = v.where((a) => a.type == AccountType.stored).toList();
         debtAccounts = v.where((a) => a.type == AccountType.debt).toList();
@@ -92,7 +83,7 @@ class _AccountItem extends StatelessWidget {
           children: [
             Icon(Icons.bolt),
             Expanded(child: Text(account.name)),
-            Text(account.balanceString()),
+            Text(account.balance.toString()),
           ],
         ),
       ),
