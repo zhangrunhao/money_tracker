@@ -37,34 +37,23 @@ const RecordModelSchema = CollectionSchema(
       name: r'desc',
       type: IsarType.string,
     ),
-    r'icon': PropertySchema(
-      id: 4,
-      name: r'icon',
-      type: IsarType.string,
-    ),
     r'id': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'id',
       type: IsarType.string,
     ),
     r'money': PropertySchema(
-      id: 6,
+      id: 5,
       name: r'money',
       type: IsarType.long,
     ),
     r'name': PropertySchema(
-      id: 7,
+      id: 6,
       name: r'name',
       type: IsarType.string,
     ),
-    r'sign': PropertySchema(
-      id: 8,
-      name: r'sign',
-      type: IsarType.string,
-      enumMap: _RecordModelsignEnumValueMap,
-    ),
     r'updateTime': PropertySchema(
-      id: 9,
+      id: 7,
       name: r'updateTime',
       type: IsarType.dateTime,
     )
@@ -104,10 +93,8 @@ int _recordModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.desc.length * 3;
-  bytesCount += 3 + object.icon.length * 3;
   bytesCount += 3 + object.id.length * 3;
   bytesCount += 3 + object.name.length * 3;
-  bytesCount += 3 + object.sign.name.length * 3;
   return bytesCount;
 }
 
@@ -121,12 +108,10 @@ void _recordModelSerialize(
   writer.writeLong(offsets[1], object.categoryId);
   writer.writeDateTime(offsets[2], object.createTime);
   writer.writeString(offsets[3], object.desc);
-  writer.writeString(offsets[4], object.icon);
-  writer.writeString(offsets[5], object.id);
-  writer.writeLong(offsets[6], object.money);
-  writer.writeString(offsets[7], object.name);
-  writer.writeString(offsets[8], object.sign.name);
-  writer.writeDateTime(offsets[9], object.updateTime);
+  writer.writeString(offsets[4], object.id);
+  writer.writeLong(offsets[5], object.money);
+  writer.writeString(offsets[6], object.name);
+  writer.writeDateTime(offsets[7], object.updateTime);
 }
 
 RecordModel _recordModelDeserialize(
@@ -140,15 +125,11 @@ RecordModel _recordModelDeserialize(
   object.categoryId = reader.readLong(offsets[1]);
   object.createTime = reader.readDateTime(offsets[2]);
   object.desc = reader.readString(offsets[3]);
-  object.icon = reader.readString(offsets[4]);
-  object.id = reader.readString(offsets[5]);
+  object.id = reader.readString(offsets[4]);
   object.isarId = id;
-  object.money = reader.readLong(offsets[6]);
-  object.name = reader.readString(offsets[7]);
-  object.sign =
-      _RecordModelsignValueEnumMap[reader.readStringOrNull(offsets[8])] ??
-          RecordSign.add;
-  object.updateTime = reader.readDateTime(offsets[9]);
+  object.money = reader.readLong(offsets[5]);
+  object.name = reader.readString(offsets[6]);
+  object.updateTime = reader.readDateTime(offsets[7]);
   return object;
 }
 
@@ -170,29 +151,15 @@ P _recordModelDeserializeProp<P>(
     case 4:
       return (reader.readString(offset)) as P;
     case 5:
-      return (reader.readString(offset)) as P;
-    case 6:
       return (reader.readLong(offset)) as P;
-    case 7:
+    case 6:
       return (reader.readString(offset)) as P;
-    case 8:
-      return (_RecordModelsignValueEnumMap[reader.readStringOrNull(offset)] ??
-          RecordSign.add) as P;
-    case 9:
+    case 7:
       return (reader.readDateTime(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
-
-const _RecordModelsignEnumValueMap = {
-  r'add': r'add',
-  r'subtract': r'subtract',
-};
-const _RecordModelsignValueEnumMap = {
-  r'add': RecordSign.add,
-  r'subtract': RecordSign.subtract,
-};
 
 Id _recordModelGetId(RecordModel object) {
   return object.isarId;
@@ -688,137 +655,6 @@ extension RecordModelQueryFilter
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'icon',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'icon',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'icon',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> iconIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'icon',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition>
-      iconIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'icon',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> idEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -1188,137 +1024,6 @@ extension RecordModelQueryFilter
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signEqualTo(
-    RecordSign value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signGreaterThan(
-    RecordSign value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signLessThan(
-    RecordSign value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signBetween(
-    RecordSign lower,
-    RecordSign upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'sign',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'sign',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'sign',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition> signIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'sign',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition>
-      signIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'sign',
-        value: '',
-      ));
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QAfterFilterCondition>
       updateTimeEqualTo(DateTime value) {
     return QueryBuilder.apply(this, (query) {
@@ -1432,18 +1137,6 @@ extension RecordModelQuerySortBy
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortByIcon() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'icon', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortByIconDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'icon', Sort.desc);
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1477,18 +1170,6 @@ extension RecordModelQuerySortBy
   QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortBySign() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'sign', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> sortBySignDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'sign', Sort.desc);
     });
   }
 
@@ -1555,18 +1236,6 @@ extension RecordModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenByIcon() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'icon', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenByIconDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'icon', Sort.desc);
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -1615,18 +1284,6 @@ extension RecordModelQuerySortThenBy
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenBySign() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'sign', Sort.asc);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenBySignDesc() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'sign', Sort.desc);
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QAfterSortBy> thenByUpdateTime() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updateTime', Sort.asc);
@@ -1667,13 +1324,6 @@ extension RecordModelQueryWhereDistinct
     });
   }
 
-  QueryBuilder<RecordModel, RecordModel, QDistinct> distinctByIcon(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'icon', caseSensitive: caseSensitive);
-    });
-  }
-
   QueryBuilder<RecordModel, RecordModel, QDistinct> distinctById(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1691,13 +1341,6 @@ extension RecordModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordModel, QDistinct> distinctBySign(
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'sign', caseSensitive: caseSensitive);
     });
   }
 
@@ -1740,12 +1383,6 @@ extension RecordModelQueryProperty
     });
   }
 
-  QueryBuilder<RecordModel, String, QQueryOperations> iconProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'icon');
-    });
-  }
-
   QueryBuilder<RecordModel, String, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
@@ -1761,12 +1398,6 @@ extension RecordModelQueryProperty
   QueryBuilder<RecordModel, String, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
-    });
-  }
-
-  QueryBuilder<RecordModel, RecordSign, QQueryOperations> signProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'sign');
     });
   }
 

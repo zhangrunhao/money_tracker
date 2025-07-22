@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:money_tracker/db/dao/account_dao.dart';
 import 'package:money_tracker/db/models/account_model.dart';
 
@@ -42,6 +39,12 @@ class _AccountListPageState extends State {
           const Text('负债'),
           _AccountList(accounts: debtAccounts),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/record');
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
