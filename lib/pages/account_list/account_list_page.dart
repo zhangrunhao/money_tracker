@@ -31,6 +31,8 @@ class _AccountListPageState extends State {
     return Scaffold(
       appBar: AppBar(title: const Text('账户列表')),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 8),
           const Text('资产'),
